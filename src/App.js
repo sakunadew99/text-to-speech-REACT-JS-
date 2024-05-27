@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
+import { TextField, Button, Typography, Container } from '@mui/material';
 import axios from 'axios';
-import { TextField, Button, Typography, Container, CircularProgress } from '@mui/material';
 
 function App() {
   const [text, setText] = useState('');
   const [speechUrl, setSpeechUrl] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -15,33 +14,30 @@ function App() {
   };
 
   const handleSpeech = async () => {
-    setLoading(true);
-    setError('');
-
     try {
-      const options = {
-        method: 'GET',
-        url: 'https://cloudlabs-text-to-speech.p.rapidapi.com/',
-        params: {
+      const postOptions = {
+        method: 'POST',
+        url: 'https://voicerss-text-to-speech.p.rapidapi.com/',
+        headers: {
+          'x-rapidapi-key': 'bf3b0dd750msh61133b961fc5319p1637b0jsn4e6b0815f3c2',
+          'x-rapidapi-host': 'voicerss-text-to-speech.p.rapidapi.com',
+          'Content-Type': 'application/json'
+        },
+        data: {
           src: text,
           hl: 'en-us',
           r: '0',
           c: 'mp3',
           f: '8khz_8bit_mono'
-        },
-        headers: {
-          'x-rapidapi-key': 'cec82254dbmshbbee1e6f96a9630p196587jsn04887fc16133',
-          'x-rapidapi-host': 'cloudlabs-text-to-speech.p.rapidapi.com'
         }
       };
 
-      const response = await axios.request(options);
-      setSpeechUrl(response.data); // Adjust this based on actual response format
+      const postResponse = await axios.request(postOptions);
+      setSpeechUrl(postResponse.data); // Adjust this based on actual response format
     } catch (error) {
-      console.error('Error converting text to speech:', error);
-      setError('Failed to convert text to speech. Please try again.');
-    } finally {
-      setLoading(false);
+      console.error('Error converting text to speech (POST):', error);
+      setError('Failed to convert text to speech using POST. Please try again.');
+      setSpeechUrl('');
     }
   };
 
@@ -64,9 +60,9 @@ function App() {
         variant="contained"
         color="primary"
         onClick={handleSpeech}
-        disabled={!text.trim() || loading}
+        disabled={!text.trim()}
       >
-        {loading ? <CircularProgress size={24} /> : 'Convert to Speech'}
+        Convert to Speech
       </Button>
       {error && <Typography variant="body2" color="error">{error}</Typography>}
       {speechUrl && (
