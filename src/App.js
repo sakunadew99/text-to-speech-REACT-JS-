@@ -30,7 +30,7 @@ function App() {
           f: '8khz_8bit_mono'
         },
         headers: {
-          'x-rapidapi-key': 'bf3b0dd750msh61133b961fc5319p1637b0jsn4e6b0815f3c2',
+          'x-rapidapi-key': 'cec82254dbmshbbee1e6f96a9630p196587jsn04887fc16133',
           'x-rapidapi-host': 'cloudlabs-text-to-speech.p.rapidapi.com'
         }
       };
